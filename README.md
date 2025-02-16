@@ -2,17 +2,18 @@
 
 ## A - Project title:
 
-LADA's potential customers analysis.
+LADA's sales analysis.
 
 ## B - Purpose and Outcome:
 
-Purpose: To help LADA's management understand the insights behind customer segments through studying LADA's sales database
+*Purpose:* 
 
-Outcome: 
+To help LADA's management understand the insights behind sales situation over 3 year (2021-2023) and customer segments through studying LADA's sales database
 
-Meaningfull insights into sales situation of the company over 3 years in general, and each year in detail.
+*Outcome:* 
 
-Try to understand the main features of the potential customers or popular model that LADA should focus their sales promotions on in the future.
+- Meaningfull insights into sales situation of the company over 3 years in general, and each year in detail.
+- Try to understand the main features of the potential customers or popular model that LADA should focus their sales promotions on in the future.
 
 ## C - **Technologies**
 
@@ -79,7 +80,7 @@ In this project, I intend to start with cleaning and furnishing the dataset firs
 
 a/ Data loading: I use Kaggle API to get the data. Below is the code:
 
-```
+```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -118,7 +119,7 @@ df_buyer.head()
 b/ Data Profiling: Sine the columns for analysisng is loacated in 2 different dataframe so that I join the 2 dataframes to gain a consolidated table including all the columns of the 2 dataframe, using **purchase_id** columns in 2 tables as key;
 
 - I use the below code:
-  ```
+  ```python
   # combine 2 table using purchase_id as foreign key
   df_joined = pd.merge(df_buyer, df_machine, on='purchase_id', how='outer')
 
@@ -138,7 +139,7 @@ b/ Data Profiling: Sine the columns for analysisng is loacated in 2 different da
 c/ Fixing data types: object → string/date/category ; fix dates using :
 
 - I check the info of joined dataframe and see that there are some columns do not have the dtype that I want:
-   ```
+   ```python
    # check columns and dtypes:
    df_joined.info()
 
@@ -166,7 +167,7 @@ c/ Fixing data types: object → string/date/category ; fix dates using :
    memory usage: 562.0+ KB
    ```
 - I will not use df_joined.convert_dtypes().dtypes to auto convert dtypes of object columns. Instead I will convert dtype for each colum to get the corect dtype for each cloumn:
-```
+```python
 # Convert columns with object dtype to category:
 
 df_joined['purchase_id'] = df_joined['purchase_id'].astype('string')
@@ -185,7 +186,7 @@ df_joined['Purchase_Date'] = pd.to_datetime(df_joined['Purchase_Date'], format="
 ```
 ... then check the df.info() again to see the result:
 
-```
+```python
 # check dtype after convert dtypes:
 df_joined.info()
 
@@ -213,7 +214,7 @@ memory usage: 374.6 KB
 ```
 d/ Removing Duplicates: Check Number of Duplicate Rows using df.duplicated().sum()
 - I run the code . to see whether or not my columns contain duplicates:
-  ```
+  ```python
   df_joined.duplicated().sum()
 
   # >> result
@@ -223,7 +224,7 @@ There is no duplicates so that I don't need to do anything else for this step an
 
 e/ Handling Missing Values: using df.isnull().sum(); this dataset has no missing value so I do not need to do this step.
 - I run the below code to check if the df has mising values:
-  ```
+  ```python
   # check mising value:
   df_joined.isnull().sum()
   ```
@@ -250,7 +251,7 @@ and the result:
 f/ Summary Statistics for Numerical Columns and Non-Numeric Columns:
 - I use the below code to see basic desctiptive analysic abot the Numerical Columns and Non-Numeric Columns in this df.
 
-```
+```python
 # Summary Statistics for Numerical Columns:
 df_joined.describe()
 
@@ -268,7 +269,7 @@ and the result:
 |  max  |   63.000000 | 1.943000e+06 |           2023-12-01 00:00:00 | 3.200000e+06 |   147.000000 |               5.000000 |
 |  std  |    7.046628 | 2.101793e+05 |                           NaN | 7.369210e+05 |    18.667676 |               1.321465 |
 
-```
+```python
 # Summary Statistics for Non-Numeric Columns
 
 # Filter non-numeric (categorical) columns
@@ -290,7 +291,7 @@ and the result:
 g/ Checking consistency: 
 - I decide to check and Fix any Inconsistencise of Non-Numeric column in df:
 
-```
+```python
 # check to see all the colum of this df
 df_joined.columns
 
@@ -302,7 +303,8 @@ Index(['purchase_id', 'id', 'Age', 'Sex', 'Income', 'Purchase_Date', 'Region',
       dtype='obje
 ```
 - Then I use a function called check_unique_values(df) . tocheck the number of unique value in each colum:
-```
+
+```python
 # Define a function to check unique values for each column in the DataFrame
 def check_unique_values(df):
     # Iterate over each column and print the number of unique values
@@ -334,7 +336,7 @@ Column 'Num_Additional_Options' has 6 unique values.
 ```
 - Then, i change the items in such categorical columns, that might possibly contains inconsistent values, into lower letter and check the unique values again
 
-```
+```python
 # Check consitency of col='Region' by counting the unique values after I change all items in col='Region' to lower letter
 
 df_joined['Region'] = df_joined['Region'].str.lower()
@@ -361,7 +363,7 @@ g/ Outlier Detection and Handling:
 - The age colum contain min values at 25 and max values at 65. This is reasonably match with the range of human being age so I don't need to remove outliers for this column:
 - I notice the Income column might contain outliers since in the customer group, there might have some individual with extraordinary income range. Hence, I use IQR to dèine lower and upper bound; and boxplot as well to check.
 
-```
+```python
 # Find IQR df_joined['Income'] :
 
 # Quartiles calcualtion
@@ -409,7 +411,7 @@ memory usage: 481.9+ KB
 ```
 The df_joined_clean now contains 5419 entries, 113 unit less incomparison to the df_joined.
 
-```
+```python
 # Số lượng outlier được loại bỏ ra khỏi model:
 outlier_num = df_joined['purchase_id'].count()-df_joined_clean['purchase_id'].count()
 
@@ -425,14 +427,14 @@ Percentage of Outlier among the whole dataset:  2.0426608821402747
 ```
 Next, I check the boxplot to see . the difference:
 
-```
+```python
 # boxplot to check outliers of 'Income','Price' : dataframe trước khi loại bỏ outliers
 
 df_joined.boxplot(column=['Income','Price'])
 ```
 ![Image](https://github.com/user-attachments/assets/cd89344a-8ba6-483e-aace-b154a4df71c4)
 
-```
+```python
 # boxplot của dataframe sau khi đã bỏ đi các outlier:
 df_joined_clean.boxplot(column=['Income','Price'])
 ```
@@ -444,13 +446,13 @@ From the result: the df_joined_clean have less outlers for further analysis.
 
 - I have a question that How many years that a customer (in this dataset) need to afford a car, asuming that his/ her income does not change over years? So that I add . aclumn for futher analysis:
 
-```
+```python
 # Add 1 more colum: Number of saving year to afford a model:
 df_joined_clean['Saving_year_num'] = df_joined_clean['Price'] / df_joined['Income']
 ```
 - Then I create visualizations to uncover patterns and relationships : correlation, histograms, pair plots, correlation:
 
-```
+```python
 # Check correlation between numeric coumns:
 df_numeric_cols = df_joined_clean.select_dtypes('number')
 
@@ -470,7 +472,7 @@ correlation_matrix
 |     Saving_year_num    | -0.005341 | -0.611459 |  0.713459 |    -0.006256 |              -0.015783 |        1.000000 |
 
 
-```
+```python
 # Visualizing the Correlation:
 plt.figure(figsize=(10,8))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
@@ -484,7 +486,7 @@ Result:
 
 Using pairplot:
 
-```
+```python
 # Pairplot
 import seaborn as sn
 
@@ -497,7 +499,7 @@ And the result:
 
 - For details, I also check the scatter plot for some specific colums:
 
-```
+```python
 # Scatter plot for Income vs Saving_year_num:
 
 plt.figure(figsize=(10,10))
@@ -512,7 +514,7 @@ Result:
 
 ![Image](https://github.com/user-attachments/assets/bce8723c-dc6d-4061-b250-c7d25a1766fc)
 
-```
+```python
 # Scatter plot for Price vs Saving_year_num:
 plt.figure(figsize=(10,10))
 sns.scatterplot(data=df_joined_clean, x='Saving_year_num', y='Price')
@@ -527,7 +529,7 @@ Result:
 
 - I also draw histomgram to see in distribution of gender in the dataset:
 
-```
+```python
 # plot histogram for colum Sex
 plt.figure(figsize=(5,5))
 
@@ -547,7 +549,7 @@ Result:
 
 Then I export the dataframe to csv for further analysis and visualization in Power BI. The files are stored in this Github repo of mine.
 
-```
+```python
 # export the dataframe to csv file for EDA in Power BI
 df_joined_clean.to_csv('lada_sales_clean_df.csv', index=False)
 
@@ -562,28 +564,37 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
 
 - **Sales Trend Analysis**:
     - Breakdown of total sales for each year (2021, 2022, 2023).
-        - Total sales of LADA over 3 years from 2021 until 2023 is 1817, 1804 and 1798
+        - Total sales of LADA over 3 years from 2021 until 2023 is 1817, 1804 and 1798.
     - Comparison of year-over-year sales performance.
-        - Sale performance of each year seems to have the same seasonal patterns. .
+        - Sale performance of each year seems to have the same seasonal patterns. 
         - Sales numbers do not change too much between the 3 years. There is a slightly decline in total sales over years. This might be an serious negative impact of Covid-19 pandemic and economic downturns.
+          
+          ![Image](https://github.com/user-attachments/assets/57ecc57b-2a0b-4632-8819-0a31960adaaa)
+          
     - Monthly sales trends to identify seasonal patterns.
         - Sales number is normally on down trend during the 1st quarter until it reach the lowest sales in April, around 100 order.
         - In every year, April is likely to have the lowest sales and revenues. The situation seems to be improved after April and the sales begin to increase again until they reach the peak in June or July. After August, the sales decrease but the demand for car is still there.
         - Among the last quarter of year, demand for car seems not to be high leads to a decrease in sales. October seems to have the most orders among the 3 months. November usually the second lowest month in sales. After December, the trend is slightly go up again until annual total sales reach the minor peak in the beginning of 1st quarter.
+                    
 - **Sales by Region**:
-    - Identify which regions in the Volga Federal District have the highest and lowest sales. - done
+    - Identify which regions in the Volga Federal District have the highest and lowest sales.
         - **Republic of Bashkortostan, Republic of Tatartsan** has highest sales in every years
         - **Republic of Mari El** has the lowest sales in every years
+     
+         ![Image](https://github.com/user-attachments/assets/d332b7c2-6b28-4979-a187-b7a5acca0eba)
+      
     - Regional growth or decline in sales over the years.
         - The first, second runner-up and last rank in the list are unchanged.
-        - **Republic of Bashkortostan** has their sales increased in2022 and then slightly decreased in the next year. However, in February 2021 the sales dropped unexpectedly in comparison to the result of the previous month. It happened the same with sales total in December of 2023, the sales dramatically declined in comparison to the same period of the previous 2 years.
+        - **Republic of Bashkortostan** has their sales increased in 2022 and then slightly decreased in the next year. However, in February 2021 the sales dropped unexpectedly in comparison to the result of the previous month. It happened the same with sales total in December of 2023, the sales dramatically declined in comparison to the same period of the previous 2 years.
         - **Republic of Tatartsan**  is at the second rank over 3 years. Their sales number is closed to the first rank in 2021. The gap is much bigger in 2021 even though Republic of Tatarstan’s sales only slightly decreased in 2022. Its total sales finally boosted in 2023.
         - **Republic of Mari El** has a slightly increase in sales. In January and May 2022, they have extremely good sales increase in comparison to other months in year. This region seems to have lowest sales on March, September and October.
+          
 - **Sales by Model**:
     - Analyze which LADA car models are the most popular.
         - Across all 20 Model, total sales ranged from 241 to 312. The taste for Model of LADA over years has changed. In 2021. it’s granta that has the highest unit sold; in 2022, it’s 2113, and in 2023 it’s 2107 having the highest sales.
         - Model granta had the highest sales at 312, followed by 2107 and 2113. 2111 had the lowest sales at 241. ﻿At 312 units sold, granta had the highest total sales and was 29.46% higher than 2111, which had the lowest sales at 241 unit sold.
-        - In total the of 3 years, granta, 2107 and 2113 are the models bought the most by customers; accounting for nearly 16.78% sales of LADA .
+        - In total the of 3 years, granta, 2107 and 2113 are the models bought the most by customers; accounting for nearly 16.78% sales of LADA. 
+          
 - **Sales by Transmission Type (MT vs AT)**:
     - Evaluate sales split between manual and automatic transmission cars.
         - Total sales for MT (3,740) was higher than AT (1,679) in over 3 years and in almost regions.
@@ -621,37 +632,68 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
     - Breakdown of customer age groups (e.g., 18–25, 26–35, etc.) :
         - Most of the customers are in age range from 45 - 55 years old.
         - Group of age bin 50 has the highest number of customer at 1466 people, accounting for 27.05% of total sales , following is age bin 55 with 1343 people, accounting for 24.78%; and the third largest age group is 45-year-old with 1131 people, accounting for 20.87 % of total sales.
-        - People in age from 25 to 35 contributed the lease to total sales in 3 years; with 25 customer in age 25, accounting for 0.42%; 113 customer in age 30, accounting for 2.09% of sales and 315 customers in age of 35, accounting for 5.81% of total sales.
-    - Trends in the age of buyers over the three years. - done in cus ana
+        - People in age from 25 to 35 contributed the least of total sales in 3 years; with 25 customer in age 25, accounting for 0.42%; 113 customer in age 30, accounting for 2.09% of sales and 315 customers in age of 35, accounting for 5.81% of total sales.
+          
+          ![Image](https://github.com/user-attachments/assets/989a44c5-e084-4afe-af90-7b95dba8799b)
+          
+    - Trends in the age of buyers over the three years.
         - We tend to have more sales for customer in age 50 to 55 in 2021 and 2023.
         - In 2023, most of the buyers in age 49, 52 and 55.
         - Sales from customer under 39 and above 58 decreased in 2022 and 2023.
-    - Correlation between age and car model preferences. - how?
+    - Correlation between age and car model preferences.
         - From the correlation matrix, there is very weak relationships between age and model.
+        - 
+          ![Image](https://github.com/user-attachments/assets/988f3d38-5f88-469b-a88c-eff9fc613164)
+          
         - From the analysis, customer in age bin of 45,50 and 55 seems to like models such as: granta (in 2021), samara and 2109 (in 2022); 2107, riva and 2113 in 2023.
         
 - **Gender Analysis**:
     - Gender split of customers (Male vs Female).
         - 90.87% customers are males and 9.13% customers are female.
+          
+          ![Image](https://github.com/user-attachments/assets/43826d61-ea0f-4423-adcc-78ec865ed598)
+          
         - Largest number of female customers are living in Republic of Tatartsan (77 among 495 customers)
     - How the gender split changes over time and across regions.
         - There is not so much change in the ratio between Male and Female customers acrocss regions over time since the annually percentage of Female customers always low, hardly exceeds 30 customers.
+          
+          ![Image](https://github.com/user-attachments/assets/380e4fe1-68f6-4af4-bc5c-a78f2c622bf4)
+        
+          ![Image](https://github.com/user-attachments/assets/7fff3892-3c73-4b4e-b34a-55aebbf9759f)
+          
 - **Income Analysis**:
     - Distribution of customer income levels.
         - Most of the customers have income in range under 300,000 RUB per year, with 600 id and accounting for 15%.
         - Following is 429 customers with income in income bins of 300,000 RUB (accounting for ~7,9 % of total) and 305 customers in bins of 400,000 RUB (accounting for ~ 5.6% of total)
         - Only 29 customer with income in bins 900,000 RUB and 4 people in bins 1,000,000 RUB. Among these 4 people, 2 customers have age above 50 and 2 other in age bin 35.
     - Correlation between income and car purchase price.
-        - From the chart: Customers in age of 28 to 35 tend to spend money for expensive models; thus the revenue for these age groups usually higher than other age groups, even in the Covid-years (2021-2022). In 2022, the average income of young people under 30 significantly increased and then turned back to normal level as before 2022.
+        - From the analysis: Customers in age of 28 to 35 tend to spend money for expensive models; thus the revenue for these age groups usually higher than other age groups, even in the Covid-years (2021-2022). In 2022, the average income of young people under 30 significantly increased and then turned back to normal level as before 2022.
     - Changes in purchasing behavior based on income levels.
+ 
+      ![Image](https://github.com/user-attachments/assets/1d3717e2-78b7-4822-9bdd-23036970d7c0)
+
+      ![Image](https://github.com/user-attachments/assets/ea1340d7-e0d6-46cd-b441-90fd8f720e0f)
+
+      ![Image](https://github.com/user-attachments/assets/43f10024-4b51-4387-ad0a-b92274cd8dc4)
+      
         - There is not so much change in this shopping behavior since young people tend to spend most of their money to high-end and shopping while the older people tend to spend for more affordable models and keep their monies for saving and investment plans.
+
+          ![Image](https://github.com/user-attachments/assets/54a79402-d51c-4f6a-84d4-4e6ad6b73505)
+          
 - **Saving Year Analysis**:
     - Average number of years customers saved for the car is 1.66 year . This does not change much over the years.
-    - Does saving duration vary by income, age, or car model? - how and which chart?
-        - Income and Number of saving year to afford a car model have strong negative correlation. in opposite, Price of Model and Saving year number have strong positive correlation.
+    - Does saving duration vary by income, age, or car model? 
+        - Income and Number of saving year to afford a car model have strong negative correlation. In opposite, Price of Model and Saving year number have strong positive correlation.
         - Younger people tend to have longer of saving year to afford a model; This might be because their annual income is not so high but the model they buy is more expensive. On the other hand, the older ones with higher income level and less expensive model purchased shall need less year to afford their car model.
-    - **Customer Segmentation**:
+
+          ![Image](https://github.com/user-attachments/assets/2860cd17-3b2a-4fb0-ae7d-50eb0b0083a5)
+
+          ![Image](https://github.com/user-attachments/assets/54a79402-d51c-4f6a-84d4-4e6ad6b73505)
+          
+- **Customer Segmentation**:
+  
         - **Age-Based Segmentation**
+  
             - **Segment 1: 45–55 Years Old (Primary Target)**
                 - **Characteristics**:
                     - Accounts for over 70% of total sales.
@@ -659,75 +701,95 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
                 - **Strategy**:
                     - Focus on promoting **value-for-money models** that emphasize **reliability** and **practicality**.
                     - Tailor offers for long-term savings and financing options.
+  
             - **Segment 2: 25–35 Years Old (Young & Premium Buyers)**
+  
                 - **Characteristics**:
                     - Contributes the least to total sales but is willing to spend on **higher-end models**.
                     - Prefers **premium models** with advanced features.
                 - **Strategy**:
                     - Market **premium and feature-rich models** through **digital platforms** like Instagram and TikTok.
                     - Provide **leasing or trade-in options** to attract these buyers despite their lower income.
+  
             - **Segment 3: Under 25 and Over 58 Years Old (Low Priority Segments)**
+  
                 - **Characteristics**:
                     - These groups contribute minimally to total sales.
                 - **Strategy**:
                     - Limited focus, but special **affordable models** and incentives could be used to attract them.
+  
         - **Income-Based Segmentation**
+  
             - **Segment 1: Low-Income (Under 300,000 RUB)**
+  
                 - **Characteristics**:
                     - Largest proportion of customers with modest purchasing power.
                     - Prefers **affordable models** like **Granta** and **2107**.
                 - **Strategy**:
                     - Offer **budget-friendly models** with **affordable financing** options, **installment plans**, and **discounts**.
+  
             - **Segment 2: Mid-Income (300,000–900,000 RUB)**
+  
                 - **Characteristics**:
                     - A significant group, likely to purchase models with a balance between affordability and features.
                 - **Strategy**:
                     - Promote **mid-range models** and emphasize **value** and **cost-effectiveness**.
+  
             - **Segment 3: High-Income (900,000–1,000,000 RUB)**
+  
                 - **Characteristics**:
                     - Prefers **premium models** and has higher spending power.
                 - **Strategy**:
                     - Create exclusive offers for high-end models with **premium features**, **customization options**, and **VIP after-sales services**.
+  
         - **Region-Based Segmentation**
+  
             - **Segment 1: High-Performing Regions (Bashkortostan, Tatarstan, Nizhny Novgorod Oblast)**
                 - **Characteristics**:
                     - These regions generate the highest revenue and account for a large portion of total sales.
                 - **Strategy**:
                     - Strengthen dealership presence and launch **region-specific promotions**.
                     - Focus on **community events** and **local loyalty programs** to maintain strong sales in these areas.
+  
             - **Segment 2: Low-Performing Regions (Mari El, and other underperforming regions)**
                 - **Characteristics**:
                     - These regions contribute less to total revenue.
                 - **Strategy**:
                     - Investigate reasons for low sales through **market research**.
                     - Tailor promotions, advertising, and dealership expansion in these regions to increase visibility and engagement.
+  
         - **Car Model Preference Segmentation**
+  
             - **Segment 1: Affordable Model Buyers (Granta, 2107, 2113)**
                 - **Characteristics**:
                     - These models dominate sales and are preferred by customers in the 45–55 age group, especially those with lower incomes.
                 - **Strategy**:
                     - Promote these models heavily in **budget-conscious segments** with an emphasis on **reliability** and **value for money**.
                     - Offer **flexible payment plans** for those who need assistance with financing.
+  
             - **Segment 2: Premium Model Buyers (High-End Models)**
                 - **Characteristics**:
                     - Young, high-income buyers in the 25–35 range are more likely to purchase higher-end models.
                 - **Strategy**:
                     - Focus marketing efforts on **premium models**, showcasing features like **advanced technology** and **customization options**.
                     - Highlight **premium experience** and **luxury** to appeal to this segment.
-    
-    ---
-    
+        
 
 ### **4. Purchase Behavior and Preferences**
 
 - **Fuel Type Preferences (Gasoline vs Diesel)**:
     - Breakdown of fuel type preferences.
         - Total sale of Fuel type (4882 units sold, accounting for 90.09%) is much higher than Diesel type ((537 units sold, accounting for 9.91%)
-    - Shifts in fuel type preference over time. - done in
+    - Shifts in fuel type preference over time.
         - There is no change in the preference regarding fuel type over 3 years.
+
+          ![Image](https://github.com/user-attachments/assets/31f92410-212c-482d-8bb3-c0b6ebb32825)
+          
 - **Additional Options**:
     - Customers tend to add 1-2 additional option or none of option to their purchase of car. Over 3 years, only 177 purchase orders having 5 additional options.
-
+    
+    ![Image](https://github.com/user-attachments/assets/ebf457cf-8bde-42fb-a1b7-8dbd38228bcc)
+  
 ---
 
 ### **5. Model-Specific Insights**
@@ -741,27 +803,26 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
     - Price segmentation and its impact on sales volume. - price bins and order count
         - 1084 of the sales is in price bin of 2,000,000, accounting for 20% of total sales; following by 1067 (19.69%) order in price bin of 1,000,000 and 1063 (19.62%) orders in price bin of 1,500,000
 
+      ![Image](https://github.com/user-attachments/assets/00991daa-ea25-4889-b33c-d54f2e36360c)
+
 #### Visualization:
 
-Using Power BI dashboard to visualize key metrics that I studied from the dataset.
+I decided to mainly use Power BI dashboard to visualize key metrics that I studied from the dataset. Some of the histogram chart, correlation heatmap ... to display the relationship between variables are done by Python.
 
-Display the relationship between columns and metrics using relevant charts and histograms
+Popular charts for visualization that I used are:
 
-Cards: 
+- Slicers 
+- Pie/Donut charts  
+- Stacked columns/bars charts
+- Clustered bar charts
+- Map
+- Line charts
+- Table
 
-Bar charts : 
-
-Columns/ Cluster charts:
-
-Pie charts:
-
-Line chart:
-
- 
 
 #### **Data Storytelling**
 
-Presentation method: Using PowerPoint file and Power BI
+For datastorytelling and presentation, I decide to use Power BI and REAMDE.md to present my analysis, insights findings and recommendation.
 
 ## **F - Outcome**
 
@@ -771,20 +832,23 @@ Presentation method: Using PowerPoint file and Power BI
     - Suggest strategies to boost sales in underperforming regions.
         - According to the sales and revenue analysis, LADA should focus their resources (human, facilities, outlets…) to the 3 biggest regions they occupied :  **Republic of Bashkortostan, Republic of Tatartsan** and **Nizhny Novgorod Oblast.** They also need to investigate the root cause for sales declined in these 3 regions in such summer months (Mar, April and May)
         - Since that **Republic of Mari El** is the region having least contribute to sales or revenue of the whole company, LADA should also consider on whether or not they should close the outlets in this region. In case they does not want to loose this region to other rivals, LADA should have ,much more efficient solutions to investigate the root cause for sales decrease in some specific months of year; and improve sales performance of this region as well.
+          
     - Recommendations for focusing on high-demand models or transmission types.
         - Customer usually place orders for MT type rather than AT type so that LADA should consider this point in making sales & marketing plans for promotion of their models or find out solutions to boost the sales of AT transmission type cars.
-        - For granta:
+        - _For granta_:
             - **Recommendation**: Since granta has consistently performed well, with the highest sales in 2021 and a significant share of total sales (29.46% higher than the lowest-selling model), it is crucial to continue promoting granta as a flagship model due to its popularity. Consider increasing its production capacity or improving availability in regions with higher demand.
             - **Action**: Launch targeted marketing campaigns emphasizing Granta's value proposition. Highlight its affordability and popularity to attract a broader customer base, especially in regions where it already performs well.
-        - For the 2 model 2107 and 2113 :
+        - _For the 2 model 2107 and 2113_ :
             - **Recommendation**: Both models have shown strong sales performance over the past three years. Maintain focus on these models by refining their features, offering more customization options, and potentially introducing limited-edition variants to keep the demand high.
             - **Action**: Expand distribution of 2107 and 2113 in high-performing regions. Introduce loyalty programs or trade-in offers to keep existing customers engaged with these models.
-        - For 2111 Model
+        - _For 2111 Model_:
             - **Recommendation**: With only 241 units sold, the 2111 model has the lowest sales and may not be resonating well with customers. Evaluate the reasons for its poor performance — whether it's due to pricing, lack of features, or shifting customer preferences.
             - **Action**: Consider rebranding or redesigning the 2111 model, focusing on improving its key selling points (e.g., fuel efficiency, engine power, or interior features). If the model is not delivering satisfactory returns, it may be worth phasing it out or reducing its presence in the market. Alternatively, reposition the 2111 model as a more affordable entry-level option if the customer segment is price-sensitive.
+              
     - Trend Monitoring to Adapt to Market Shifts:
         - **Recommendation**: The taste for LADA car models has shifted over the years. Continuous monitoring of sales data, customer reviews, and competitor activities will allow LADA to stay ahead of changing market demands and adapt its models accordingly.
         - **Action**: Set up a system for quarterly reviews of car model performance to quickly identify trends. Adapt production schedules, marketing efforts, and distribution channels based on this data.
+          
 - **Revenue Optimization**:
     - *Diversify the Model Portfolio by Product Line Expansion:* ****
         - **Recommendation**: To capture a broader customer base, LADA should consider expanding its portfolio to cater to different segments (e.g., electric vehicles or hybrids) or introducing models with higher-end features to appeal to premium buyers.
