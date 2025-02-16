@@ -87,7 +87,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-# 1. Install Kaggle API in Google Colab
+# Install Kaggle API in Google Colab
 !pip install kaggle
 
 from google.colab import files
