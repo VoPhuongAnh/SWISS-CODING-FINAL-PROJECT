@@ -779,7 +779,7 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
 
 - **Fuel Type Preferences (Gasoline vs Diesel)**:
     - Breakdown of fuel type preferences.
-        - Total sale of Fuel type (4882 units sold, accounting for 90.09%) is much higher than Diesel type ((537 units sold, accounting for 9.91%)
+        - Total sale of Petrol (4882 units sold, accounting for 90.09%) is much higher than Diesel type ((537 units sold, accounting for 9.91%)
     - Shifts in fuel type preference over time.
         - There is no change in the preference regarding fuel type over 3 years.
 
