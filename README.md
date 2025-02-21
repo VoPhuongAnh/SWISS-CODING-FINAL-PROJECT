@@ -805,6 +805,51 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
 
       ![Image](https://github.com/user-attachments/assets/00991daa-ea25-4889-b33c-d54f2e36360c)
 
+I created a table to look into the distribution of total sales of each model in each of price bin, as well as the percentage of total count purchase_id of each model in the highest price bin (3,000,000): 
+
+| model         | price_bin | total_sales | total_in_highest_price_bin | %highest_price_bin_in_total_sales                                                 |
+|---------------|-----------|-------------|----------------------------|-----------------------------------------------------------------------------------|
+| granta        | 2         | 312         | 32                         |                                                                          10.26    |
+| 2107          | 2         | 299         | 28                         |                                                                             9.36  |
+| 2113          | 1         | 298         | 24                         |                                                                             8.05  |
+| riva          | 2         | 288         | 22                         |                                                                             7.64  |
+| priora        | 2         | 284         | 25                         |                                                                             8.80  |
+| vesta         | 2         | 283         | 41                         |                                                                          14.49    |
+| 2109          | 1         | 273         | 22                         |                                                                             8.06  |
+| samara        | 2         | 273         | 30                         |                                                                          10.99    |
+| largus        | 1         | 267         | 22                         |                                                                             8.24  |
+| 2110          | 1.5       | 265         | 19                         |                                                                             7.17  |
+| 21099         | 1         | 264         | 26                         |                                                                             9.85  |
+| kalina        | 2.5       | 264         | 25                         |                                                                             9.47  |
+| oka           | 2         | 264         | 28                         |                                                                          10.61    |
+| 2114          | 2         | 262         | 30                         |                                                                          11.45    |
+| niva   legend | 2         | 262         | 21                         |                                                                             8.02  |
+| 2115          | 1.5       | 260         | 23                         |                                                                             8.85  |
+| 2112          | 1         | 258         | 26                         |                                                                          10.08    |
+| niva   travel | 2.5       | 253         | 31                         |                                                                          12.25    |
+| xray          | 2.5       | 249         | 29                         |                                                                          11.65    |
+| 2111          | 1         | 241         | 24                         |                                                                             9.96  |
+
+in general :
+
+<img width="508" alt="Image" src="https://github.com/user-attachments/assets/4c23edb5-b6a2-4449-8b54-912f936f1b12" />
+
+For price bin of 1,000,000:
+
+<img width="507" alt="Image" src="https://github.com/user-attachments/assets/2ed48828-ded2-4ea4-89de-222604bf5c67" />
+
+For price bin of 1,500,000:
+
+<img width="507" alt="Image" src="https://github.com/user-attachments/assets/53844c96-4704-4cbd-ab2c-5272bd9ad0d0" />
+
+For price bin of 2,000,000:
+
+<img width="507" alt="Image" src="https://github.com/user-attachments/assets/6c6be228-232c-4a71-a319-7fe925bd96af" />
+
+For price bin of 2,500,000:
+
+<img width="507" alt="Image" src="https://github.com/user-attachments/assets/09b5a857-aff5-4ba0-aec5-fc2db6a6e827" />
+
 #### Visualization:
 
 I decided to mainly use Power BI dashboard to visualize key metrics that I studied from the dataset. Some of the histogram chart, correlation heatmap ... to display the relationship between variables are done by Python.
