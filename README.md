@@ -789,7 +789,31 @@ df_joined.to_csv('lada_sales_df.csv', index=False)
     - Customers tend to add 1-2 additional option or none of option to their purchase of car. Over 3 years, only 177 purchase orders having 5 additional options.
     
     ![Image](https://github.com/user-attachments/assets/ebf457cf-8bde-42fb-a1b7-8dbd38228bcc)
-  
+
+Distribution of each model's purchase count with 0 add-on otion:
+
+<img width="599" alt="Image" src="https://github.com/user-attachments/assets/a2d3b640-8136-43ee-ad5a-0fb4345e78b3" />
+
+Distribution of each model's purchase count with 1 add-on otion:
+
+<img width="599" alt="Image" src="https://github.com/user-attachments/assets/9d7ef5a6-cc1e-479f-8b91-f553e6b67575" />
+
+Distribution of each model's purchase count with 2 add-on otion:
+
+<img width="595" alt="Image" src="https://github.com/user-attachments/assets/96823511-1f65-49e2-9fe3-3d6cfcfc8bae" />
+
+Distribution of each model's purchase count with 3 add-on otion:
+
+<img width="599" alt="Image" src="https://github.com/user-attachments/assets/6c18fc77-c5ec-46a5-8e83-03621ef38b8e" />
+
+Distribution of each model's purchase count with 4 add-on otion:
+
+<img width="598" alt="Image" src="https://github.com/user-attachments/assets/bc877555-4093-4c72-a4a0-c4a05ef04b74" />
+
+Distribution of each model's purchase count with 5 add-on otion:
+
+<img width="599" alt="Image" src="https://github.com/user-attachments/assets/c41c779e-403a-40a0-8cee-2277f34bee23" />
+
 ---
 
 ### **5. Model-Specific Insights**
